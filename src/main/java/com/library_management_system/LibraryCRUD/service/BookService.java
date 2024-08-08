@@ -13,7 +13,6 @@ public class BookService {
     private BookRepository bookRepository;
 
 
-
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
@@ -34,7 +33,11 @@ public class BookService {
         return null;
     }
 
-    public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+    public boolean deleteBook(Long id) {
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

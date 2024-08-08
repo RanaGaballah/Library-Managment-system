@@ -7,13 +7,16 @@ import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.library_management_system.LibraryCRUD.dto.ApiResponse;
 import java.util.List;
 import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/api/books")
+@Validated
 public class BookController {
 
     @Autowired
@@ -44,9 +47,15 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable @Min(1) Long id) {
-        bookService.deleteBook(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse> deleteBook(@PathVariable @Min(1) Long id) {
+        boolean isDeleted = bookService.deleteBook(id);
+        if (isDeleted) {
+            ApiResponse response = new ApiResponse("success", "Book with ID " + id + " has been successfully deleted.");
+            return ResponseEntity.ok(response);
+        } else {
+            ApiResponse response = new ApiResponse("error", "Book with ID " + id + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     // Global Exception Handling
