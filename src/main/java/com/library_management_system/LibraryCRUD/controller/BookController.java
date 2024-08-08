@@ -1,6 +1,7 @@
 package com.library_management_system.LibraryCRUD.controller;
 
 import com.library_management_system.LibraryCRUD.model.Book;
+import com.library_management_system.LibraryCRUD.model.Patron;
 import com.library_management_system.LibraryCRUD.service.BookService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -35,32 +36,33 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> addBook(@RequestBody @Valid Book book) {
+    public ResponseEntity<ApiResponse<Book>> addBook(@RequestBody @Valid Book book) {
         Book savedBook = bookService.addBook(book);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
+        ApiResponse<Book> response = new ApiResponse<>("success", "Book has been successfully added.", savedBook);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable @Min(1) Long id, @RequestBody @Valid Book book) {
+    public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable Long id, @RequestBody @Valid Book book) {
         Book updatedBook = bookService.updateBook(id, book);
-        return updatedBook != null ? ResponseEntity.ok(updatedBook) : ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteBook(@PathVariable @Min(1) Long id) {
-        boolean isDeleted = bookService.deleteBook(id);
-        if (isDeleted) {
-            ApiResponse response = new ApiResponse("success", "Book with ID " + id + " has been successfully deleted.");
+        if (updatedBook != null) {
+            ApiResponse<Book> response = new ApiResponse<>("success", "Book with ID " + id + " has been successfully updated.", updatedBook);
             return ResponseEntity.ok(response);
         } else {
-            ApiResponse response = new ApiResponse("error", "Book with ID " + id + " not found.");
+            ApiResponse<Book> response = new ApiResponse<>("error", "Book with ID " + id + " not found.", null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
-    // Global Exception Handling
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable @Min(1) Long id) {
+        boolean isDeleted = bookService.deleteBook(id);
+        if (isDeleted) {
+            ApiResponse<Void> response = new ApiResponse<>("success", "Book with ID " + id + " has been successfully deleted.", null);
+            return ResponseEntity.ok(response);
+        } else {
+            ApiResponse<Void> response = new ApiResponse<>("error", "Book with ID " + id + " not found.", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 }
