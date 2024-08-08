@@ -1,5 +1,5 @@
 package com.library_management_system.LibraryCRUD.exception;
-
+import com.library_management_system.LibraryCRUD.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +32,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    // Other exception handlers...
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception ex) {
@@ -41,4 +40,48 @@ public class GlobalExceptionHandler {
         errorResponse.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "error",
+                ex.getMessage()
+
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "error",
+                ex.getMessage()
+
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(BookAlreadyBorrowedException.class)
+    public ResponseEntity<ErrorResponse> handleBookAlreadyBorrowedException(BookAlreadyBorrowedException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "error",
+                ex.getMessage()
+
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(BookAlreadyReturnedException.class)
+    public ResponseEntity<ErrorResponse> handleBookAlreadyReturnedException(BookAlreadyReturnedException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "error",
+                ex.getMessage()
+
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+
 }

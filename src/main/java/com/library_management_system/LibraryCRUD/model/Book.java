@@ -1,9 +1,7 @@
 package com.library_management_system.LibraryCRUD.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Getter
@@ -41,6 +41,9 @@ public class Book {
     @Size(min = 10, max = 13, message = "ISBN must be between 10 and 13 characters")
     private String isbn;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<BorrowingRecord> borrowingRecords;
 
 
 
