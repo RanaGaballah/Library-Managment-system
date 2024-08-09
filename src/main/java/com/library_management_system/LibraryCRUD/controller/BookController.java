@@ -1,5 +1,6 @@
 package com.library_management_system.LibraryCRUD.controller;
 
+import com.library_management_system.LibraryCRUD.exception.ResourceNotFoundException;
 import com.library_management_system.LibraryCRUD.model.Book;
 import com.library_management_system.LibraryCRUD.service.BookService;
 import jakarta.validation.Valid;

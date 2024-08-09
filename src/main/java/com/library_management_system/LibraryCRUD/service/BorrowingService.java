@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.library_management_system.LibraryCRUD.exception.BookAlreadyBorrowedException;
 import com.library_management_system.LibraryCRUD.exception.BookAlreadyReturnedException;
 import com.library_management_system.LibraryCRUD.exception.ResourceNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class BorrowingService {
     @Autowired
     private PatronRepository patronRepository;
 
+    @Transactional
     public BorrowingRecord createBorrowingRecord(Long bookId, Long patronId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
@@ -47,6 +49,7 @@ public class BorrowingService {
         return borrowingRecordRepository.save(borrowingRecord);
     }
 
+    @Transactional
     public BorrowingRecord returnBorrowedBook(Long bookId, Long patronId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
