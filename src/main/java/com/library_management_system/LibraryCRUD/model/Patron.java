@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class Patron {
     private String email;
 
     @NotBlank(message = "Contact number is mandatory")
+    @Pattern(regexp = "^[+]?[0-9]{10,15}$", message = "Contact number must be between 10 and 15 digits long and may start with a '+'")
     private String contactNumber;
 
 

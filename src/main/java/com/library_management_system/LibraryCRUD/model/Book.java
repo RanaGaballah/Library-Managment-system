@@ -3,9 +3,7 @@ package com.library_management_system.LibraryCRUD.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -35,6 +33,8 @@ public class Book {
     private String author;
 
     @NotNull(message = "Publication year is mandatory")
+    @Min(value = 1900, message = "Publication year must be after 1900")
+    @Max(value = 2025, message = "Publication year must be before 2025")
     private Integer publicationYear;
 
 
