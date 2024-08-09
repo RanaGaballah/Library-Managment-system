@@ -22,7 +22,7 @@ public class BorrowingController {
     private BorrowingService borrowingRecordService;
 
     @PostMapping("/borrow/{bookId}/patron/{patronId}")
-    public ResponseEntity<ApiResponse<BorrowingResponseDTO>> borrowBook(@PathVariable Long bookId, @PathVariable Long patronId) {
+    public ResponseEntity<ApiResponse<BorrowingResponseDTO>> borrowBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordService.createBorrowingRecord(bookId, patronId);
         BorrowingResponseDTO borrowingResponseDTO = new BorrowingResponseDTO(borrowingRecord.getBook(), borrowingRecord.getPatron());
         ApiResponse<BorrowingResponseDTO> response = new ApiResponse<>("success", "Book borrowed successfully", borrowingResponseDTO);
@@ -30,7 +30,7 @@ public class BorrowingController {
     }
 
     @PutMapping("/return/{bookId}/patron/{patronId}")
-    public ResponseEntity<ApiResponse<BorrowingResponseDTO>> returnBook(@PathVariable Long bookId, @PathVariable Long patronId) {
+    public ResponseEntity<ApiResponse<BorrowingResponseDTO>> returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordService.returnBorrowedBook(bookId, patronId);
         BorrowingResponseDTO borrowingResponseDTO = new BorrowingResponseDTO(borrowingRecord.getBook(), borrowingRecord.getPatron());
         ApiResponse<BorrowingResponseDTO> response = new ApiResponse<>("success", "Book returned successfully", borrowingResponseDTO);

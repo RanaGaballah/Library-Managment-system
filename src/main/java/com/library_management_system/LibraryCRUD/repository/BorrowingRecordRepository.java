@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecord, Long> {
+public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecord, Integer> {
 
 
     Optional<BorrowingRecord> findByBookAndReturnDateIsNull(Book book);

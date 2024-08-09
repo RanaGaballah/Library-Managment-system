@@ -22,7 +22,7 @@ public class Patron {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")

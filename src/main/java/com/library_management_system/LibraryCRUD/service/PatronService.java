@@ -26,7 +26,7 @@ public class PatronService {
     }
 
     @Transactional(readOnly = true)
-    public Patron getPatronById(Long id) {
+    public Patron getPatronById(Integer id) {
         return patronRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patron with ID " + id + " not found."));
     }
@@ -36,7 +36,7 @@ public class PatronService {
     }
 
     @Transactional
-    public Patron updatePatron(Long id, Patron patron) {
+    public Patron updatePatron(Integer id, Patron patron) {
         if (!patronRepository.existsById(id)) {
             throw new ResourceNotFoundException("Patron with ID " + id + " not found.");
         }
@@ -45,7 +45,7 @@ public class PatronService {
     }
 
     @Transactional
-    public void deletePatron(Long id) {
+    public void deletePatron(Integer id) {
         Optional<Patron> patronOptional = patronRepository.findById(id);
         if (patronOptional.isPresent()) {
             Patron patron = patronOptional.get();
@@ -62,7 +62,9 @@ public class PatronService {
 
             // Now delete the patron
             patronRepository.deleteById(id);
+        }else{
+            throw new ResourceNotFoundException("Patron with ID " + id + " not found.");
         }
-        throw new ResourceNotFoundException("Patron with ID " + id + " not found.");
+
     }
 }

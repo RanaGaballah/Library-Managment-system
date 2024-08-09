@@ -20,7 +20,7 @@ public class BorrowingRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)

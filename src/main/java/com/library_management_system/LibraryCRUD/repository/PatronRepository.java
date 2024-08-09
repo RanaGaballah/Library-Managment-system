@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface PatronRepository extends JpaRepository<Patron, Long> {
+public interface PatronRepository extends JpaRepository<Patron, Integer> {
 
     @Modifying
     @Transactional

@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable @Min(1) Integer id) {
         try {
             Book book = bookService.getBookById(id);
             ApiResponse<Book> response = new ApiResponse<>("success", "Book found", book);
@@ -49,7 +49,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable @Min(1) Long id, @RequestBody @Valid Book book) {
+    public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable @Min(1) Integer id, @RequestBody @Valid Book book) {
         try {
             Book updatedBook = bookService.updateBook(id, book);
             ApiResponse<Book> response = new ApiResponse<>("success", "Book updated successfully.", updatedBook);
@@ -61,7 +61,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable Integer id) {
         try {
             bookService.deleteBook(id);
             ApiResponse<Void> response = new ApiResponse<>("success", "Book with ID " + id + " has been successfully deleted.", null);

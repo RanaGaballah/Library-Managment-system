@@ -27,7 +27,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Book getBookById(Long id) {
+    public Book getBookById(Integer id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book with ID " + id + " not found."));
     }
@@ -38,7 +38,7 @@ public class BookService {
     }
 
     @Transactional
-    public Book updateBook(Long id, Book book) {
+    public Book updateBook(Integer id, Book book) {
         if (!bookRepository.existsById(id)) {
             throw new ResourceNotFoundException("Book with ID " + id + " not found.");
         }
@@ -47,7 +47,7 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteBook(Long id) {
+    public void deleteBook(Integer id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
@@ -64,8 +64,10 @@ public class BookService {
 
             // Now delete the book
             bookRepository.deleteById(id);
+        }else {
+            throw new ResourceNotFoundException("Book with ID " + id + " not found.");
         }
-        throw new ResourceNotFoundException("Book with ID " + id + " not found.");
+
 
 
 

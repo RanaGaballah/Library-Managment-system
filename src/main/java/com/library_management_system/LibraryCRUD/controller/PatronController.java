@@ -31,7 +31,7 @@ public class PatronController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Patron>> getPatronById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<ApiResponse<Patron>> getPatronById(@PathVariable @Min(1) Integer id) {
         try {
             Patron patron = patronService.getPatronById(id);
             ApiResponse<Patron> response = new ApiResponse<>("success", "Patron found", patron);
@@ -50,7 +50,7 @@ public class PatronController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Patron>> updatePatron(@PathVariable @Min(1) Long id, @RequestBody @Valid Patron patron) {
+    public ResponseEntity<ApiResponse<Patron>> updatePatron(@PathVariable @Min(1) Integer id, @RequestBody @Valid Patron patron) {
         try {
             Patron updatedPatron = patronService.updatePatron(id, patron);
             ApiResponse<Patron> response = new ApiResponse<>("success", "Patron updated successfully.", updatedPatron);
@@ -62,7 +62,7 @@ public class PatronController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deletePatron(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<ApiResponse<Void>> deletePatron(@PathVariable @Min(1) Integer id) {
         try {
             patronService.deletePatron(id);
             ApiResponse<Void> response = new ApiResponse<>("success", "Patron with ID " + id + " has been successfully deleted.", null);

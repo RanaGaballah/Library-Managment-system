@@ -2,12 +2,12 @@ package com.library_management_system.LibraryCRUD.dto;
 
 public class PatronDTO {
 
-    private Long id;
+    private Integer id;
     private String name;
     private String email;
     private String contactNumber;
 
-    public PatronDTO(Long id, String name, String email, String contactNumber) {
+    public PatronDTO(Integer id, String name, String email, String contactNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -15,11 +15,11 @@ public class PatronDTO {
     }
 
     // Getters and setters
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

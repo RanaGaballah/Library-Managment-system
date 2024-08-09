@@ -22,7 +22,7 @@ public class Book {
     // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "Title is mandatory")
     @Size(max = 100, message = "Title cannot be more than 100 characters")
@@ -41,6 +41,7 @@ public class Book {
     @NotBlank(message = "ISBN is mandatory")
     @Size(min = 10, max = 13, message = "ISBN must be between 10 and 13 characters")
     private String isbn;
+
 
 
 }

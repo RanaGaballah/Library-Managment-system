@@ -2,13 +2,13 @@ package com.library_management_system.LibraryCRUD.dto;
 
 public class BookDTO {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String author;
     private Integer publicationYear;
     private String isbn;
 
-    public BookDTO(Long id, String title, String author, Integer publicationYear, String isbn) {
+    public BookDTO(Integer id, String title, String author, Integer publicationYear, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -17,11 +17,11 @@ public class BookDTO {
     }
 
     // Getters and setters
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -29,7 +29,7 @@ public class BorrowingService {
     private PatronRepository patronRepository;
 
     @Transactional
-    public BorrowingRecord createBorrowingRecord(Long bookId, Long patronId) {
+    public BorrowingRecord createBorrowingRecord(Integer bookId, Integer patronId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
 
@@ -50,7 +50,7 @@ public class BorrowingService {
     }
 
     @Transactional
-    public BorrowingRecord returnBorrowedBook(Long bookId, Long patronId) {
+    public BorrowingRecord returnBorrowedBook(Integer bookId, Integer patronId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + bookId));
 
