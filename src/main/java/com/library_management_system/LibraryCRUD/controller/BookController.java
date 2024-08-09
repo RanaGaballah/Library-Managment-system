@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.library_management_system.LibraryCRUD.dto.ApiResponse;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @RestController
@@ -30,9 +30,15 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable @Min(1) Long id) {
-        Optional<Book> book = bookService.getBookById(id);
-        return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable @Min(1) Long id) {
+        try {
+            Book book = bookService.getBookById(id);
+            ApiResponse<Book> response = new ApiResponse<>("success", "Book found", book);
+            return ResponseEntity.ok(response);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Book> response = new ApiResponse<>("error", e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @PostMapping
@@ -43,26 +49,27 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable Long id, @RequestBody @Valid Book book) {
-        Book updatedBook = bookService.updateBook(id, book);
-        if (updatedBook != null) {
-            ApiResponse<Book> response = new ApiResponse<>("success", "Book with ID " + id + " has been successfully updated.", updatedBook);
+    public ResponseEntity<ApiResponse<Book>> updateBook(@PathVariable @Min(1) Long id, @RequestBody @Valid Book book) {
+        try {
+            Book updatedBook = bookService.updateBook(id, book);
+            ApiResponse<Book> response = new ApiResponse<>("success", "Book updated successfully.", updatedBook);
             return ResponseEntity.ok(response);
-        } else {
-            ApiResponse<Book> response = new ApiResponse<>("error", "Book with ID " + id + " not found.", null);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Book> response = new ApiResponse<>("error", e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable @Min(1) Long id) {
-        boolean isDeleted = bookService.deleteBook(id);
-        if (isDeleted) {
+        try {
+            bookService.deleteBook(id);
             ApiResponse<Void> response = new ApiResponse<>("success", "Book with ID " + id + " has been successfully deleted.", null);
             return ResponseEntity.ok(response);
-        } else {
-            ApiResponse<Void> response = new ApiResponse<>("error", "Book with ID " + id + " not found.", null);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Void> response = new ApiResponse<>("error", e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+
     }
 }

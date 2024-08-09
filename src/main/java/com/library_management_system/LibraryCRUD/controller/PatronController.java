@@ -2,6 +2,7 @@ package com.library_management_system.LibraryCRUD.controller;
 
 
 import com.library_management_system.LibraryCRUD.dto.ApiResponse;
+import com.library_management_system.LibraryCRUD.exception.ResourceNotFoundException;
 import com.library_management_system.LibraryCRUD.model.Patron;
 import com.library_management_system.LibraryCRUD.service.PatronService;
 import jakarta.validation.constraints.Min;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/patrons")
@@ -31,9 +31,15 @@ public class PatronController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patron> getPatronById(@PathVariable Long id) {
-        Optional<Patron> patron = patronService.getPatronById(id);
-        return patron.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<Patron>> getPatronById(@PathVariable @Min(1) Long id) {
+        try {
+            Patron patron = patronService.getPatronById(id);
+            ApiResponse<Patron> response = new ApiResponse<>("success", "Patron found", patron);
+            return ResponseEntity.ok(response);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Patron> response = new ApiResponse<>("error", e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @PostMapping
@@ -44,25 +50,25 @@ public class PatronController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Patron>> updatePatron(@PathVariable Long id, @RequestBody @Valid Patron patron) {
-        Patron updatedPatron = patronService.updatePatron(id, patron);
-        if (updatedPatron != null) {
-            ApiResponse<Patron> response = new ApiResponse<>("success", "Patron with ID " + id + " has been successfully updated.", updatedPatron);
+    public ResponseEntity<ApiResponse<Patron>> updatePatron(@PathVariable @Min(1) Long id, @RequestBody @Valid Patron patron) {
+        try {
+            Patron updatedPatron = patronService.updatePatron(id, patron);
+            ApiResponse<Patron> response = new ApiResponse<>("success", "Patron updated successfully.", updatedPatron);
             return ResponseEntity.ok(response);
-        } else {
-            ApiResponse<Patron> response = new ApiResponse<>("error", "Patron with ID " + id + " not found.", null);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Patron> response = new ApiResponse<>("error", e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePatron(@PathVariable @Min(1) Long id) {
-        boolean isDeleted = patronService.deletePatron(id);
-        if (isDeleted) {
+        try {
+            patronService.deletePatron(id);
             ApiResponse<Void> response = new ApiResponse<>("success", "Patron with ID " + id + " has been successfully deleted.", null);
             return ResponseEntity.ok(response);
-        } else {
-            ApiResponse<Void> response = new ApiResponse<>("error", "Patron with ID " + id + " not found.", null);
+        } catch (ResourceNotFoundException e) {
+            ApiResponse<Void> response = new ApiResponse<>("error", e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }

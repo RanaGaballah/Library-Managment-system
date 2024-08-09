@@ -1,6 +1,6 @@
 package com.library_management_system.LibraryCRUD.service;
 
-import com.library_management_system.LibraryCRUD.model.Book;
+import com.library_management_system.LibraryCRUD.exception.ResourceNotFoundException;
 import com.library_management_system.LibraryCRUD.model.BorrowingRecord;
 import com.library_management_system.LibraryCRUD.model.Patron;
 import com.library_management_system.LibraryCRUD.repository.BorrowingRecordRepository;
@@ -26,27 +26,26 @@ public class PatronService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Patron> getPatronById(Long id) {
-        return patronRepository.findById(id);
+    public Patron getPatronById(Long id) {
+        return patronRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patron with ID " + id + " not found."));
     }
-
     @Transactional
     public Patron addPatron(Patron patron) {
         return patronRepository.save(patron);
     }
 
     @Transactional
-    public Patron updatePatron(Long id, Patron patronDetails) {
-        return patronRepository.findById(id).map(patron -> {
-            patron.setName(patronDetails.getName());
-            patron.setEmail(patronDetails.getEmail());
-            patron.setContactNumber(patronDetails.getContactNumber());
-            return patronRepository.save(patron);
-        }).orElse(null);
+    public Patron updatePatron(Long id, Patron patron) {
+        if (!patronRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Patron with ID " + id + " not found.");
+        }
+        patron.setId(id);
+        return patronRepository.save(patron);
     }
 
     @Transactional
-    public boolean deletePatron(Long id) {
+    public void deletePatron(Long id) {
         Optional<Patron> patronOptional = patronRepository.findById(id);
         if (patronOptional.isPresent()) {
             Patron patron = patronOptional.get();
@@ -63,8 +62,7 @@ public class PatronService {
 
             // Now delete the patron
             patronRepository.deleteById(id);
-            return true;
         }
-        return false;
+        throw new ResourceNotFoundException("Patron with ID " + id + " not found.");
     }
 }

@@ -1,5 +1,6 @@
 package com.library_management_system.LibraryCRUD.service;
 
+import com.library_management_system.LibraryCRUD.exception.ResourceNotFoundException;
 import com.library_management_system.LibraryCRUD.model.Book;
 import com.library_management_system.LibraryCRUD.model.BorrowingRecord;
 import com.library_management_system.LibraryCRUD.repository.BookRepository;
@@ -26,8 +27,9 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Book> getBookById(Long id) {
-        return bookRepository.findById(id);
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book with ID " + id + " not found."));
     }
 
     @Transactional
@@ -37,15 +39,15 @@ public class BookService {
 
     @Transactional
     public Book updateBook(Long id, Book book) {
-        if (bookRepository.existsById(id)) {
-            book.setId(id);
-            return bookRepository.save(book);
+        if (!bookRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Book with ID " + id + " not found.");
         }
-        return null;
+        book.setId(id);
+        return bookRepository.save(book);
     }
 
     @Transactional
-    public boolean deleteBook(Long id) {
+    public void deleteBook(Long id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
@@ -62,8 +64,10 @@ public class BookService {
 
             // Now delete the book
             bookRepository.deleteById(id);
-            return true;
         }
-        return false;
+        throw new ResourceNotFoundException("Book with ID " + id + " not found.");
+
+
+
     }
 }
