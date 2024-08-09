@@ -15,5 +15,5 @@ The Library Management System API is built using Spring Boot and provides a way 
 
 ## Project Documentation
 
-https://docs.google.com/document/d/1j4zpIjZyGJRDHNLi0LDGNBl8CcMrWbn6kiRSdJtbELk/edit?usp=sharing
+https://docs.google.com/document/d/1FpYstBCsuFNImFiyF8nzVKrr9Dfda30r9G-FHaMpUJI/edit?usp=sharing
 
