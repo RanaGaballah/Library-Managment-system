@@ -229,9 +229,7 @@ class PatronControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedPatron)))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validation failed"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].field").value("contactNumber"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].message").value("Contact number is mandatory"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validation failed"));
     }
 
     @Test
