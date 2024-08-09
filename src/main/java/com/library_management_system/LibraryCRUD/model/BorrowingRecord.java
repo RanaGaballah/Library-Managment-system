@@ -24,12 +24,10 @@ public class BorrowingRecord {
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    @JsonBackReference
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "patron_id", nullable = false)
-    @JsonBackReference
     private Patron patron;
 
     @NotNull(message = "Borrow date is mandatory")

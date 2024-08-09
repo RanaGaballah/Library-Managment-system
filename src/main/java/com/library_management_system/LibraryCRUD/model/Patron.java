@@ -34,8 +34,6 @@ public class Patron {
     @NotBlank(message = "Contact number is mandatory")
     private String contactNumber;
 
-    @OneToMany(mappedBy = "patron", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<BorrowingRecord> borrowingRecords;
+
 
 }
