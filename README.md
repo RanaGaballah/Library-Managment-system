@@ -50,8 +50,8 @@ Before you begin, ensure you have met the following requirements:
    
 2. Navigate to the project directory:
 
-  ```bash
-  cd Library-Managment-system
+    ```bash
+    cd Library-Managment-system
 
 ### Run The Application
 
@@ -60,4 +60,6 @@ open the application in your IDE and run it
 ## Project Documentation
 
 https://docs.google.com/document/d/1FpYstBCsuFNImFiyF8nzVKrr9Dfda30r9G-FHaMpUJI/edit?usp=sharing
+
+
 
