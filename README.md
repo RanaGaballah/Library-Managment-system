@@ -1,6 +1,6 @@
 # Library Management System 
 
-The **Library Management System ** is a comprehensive solution built using Spring Boot, designed to assist librarians in efficiently managing books, patrons, and borrowing records. This project provides a RESTful API enabling CRUD operations for books and patrons, as well as endpoints to handle the borrowing and returning of books.
+The **Library Management System** is a comprehensive solution built using Spring Boot, designed to assist librarians in efficiently managing books, patrons, and borrowing records. This project provides a RESTful API enabling CRUD operations for books and patrons, as well as endpoints to handle the borrowing and returning of books.
 
 ## Table of Contents
 
